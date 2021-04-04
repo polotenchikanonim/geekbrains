@@ -17,16 +17,83 @@ public class Main {
     public static void main(String[] args) {
         initMap();
         printMap();
-        boolean isUserStep = random.nextBoolean();
-        if (isUserStep) {
-            System.out.println(true);
+        while (true) {
+            humanTurn();
+            printMap();
+            if (checkWin(DOT_X)){
+                System.out.println("Победил человек");
+                break;
+            }
+            if (isMapFull()){
+                System.out.println("Ничья");
+                break;
+            }
+            computerTurn();
+            printMap();
+            if (checkWin(DOT_O)){
+                System.out.println("Победил компьютер");
+                break;
+            }
         }
+        System.out.println("Игра закончена");
+        sc.close();
+    }
+
+    public static boolean checkDiagonal(char symbol){
+        byte count;
+        count = 0;
+        for (byte i=0; i<SIZE; i++){
+            if (map[i][i] == symbol){
+                count++;
+            }
+        }
+        if (count == DOTS_TO_WIN){
+            return true;
+        }
+        count = 0;
+        for (byte i=SIZE-1; i>=0; i--){
+            if (map[i][i] == symbol){
+                count++;
+            }
+        }
+        return count == DOTS_TO_WIN;
+    }
+
+    public static boolean checkVertical(char symbol){
+        for (byte i=0; i<SIZE; i++){
+            byte count = 0;
+            for(byte j=0; j<SIZE; j++){
+                if (map[j][i] == symbol){
+                    count++;
+                }
+            }
+            if (count == DOTS_TO_WIN) return true;
+        }
+        return false;
+    }
+
+    public static boolean checkHorizontal(char symbol){
+        for (byte i=0; i<SIZE; i++){
+            byte count = 0;
+            for(byte j=0; j<SIZE; j++){
+                if (map[i][j] == symbol)
+                    count++;
+            }
+            if (count == DOTS_TO_WIN) return true;
+        }
+        return false;
+    }
+
+    public static boolean checkWin(char symbol) {
+        if (checkHorizontal(symbol)) return true;
+        if (checkVertical(symbol)) return true;
+        return checkDiagonal(symbol);
     }
 
     public static boolean isMapFull() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (map[i][j] == DOT_EMPTY) return false;
+        for (char[] chars : map) {
+            for (int j = 0; j < map.length; j++) {
+                if (chars[j] == DOT_EMPTY) return false;
             }
         }
         return true;
@@ -54,30 +121,23 @@ public class Main {
             System.out.println("Введите координаты в формате X Y");
             x = sc.nextInt() - 1;
             y = sc.nextInt() - 1;
-        } while (isCellValid(x, y));
+        } while (isNotCellValid(x, y));
         map[y][x] = DOT_X;
     }
 
-//    public static void printMap() {
-//        for (int i = 0; i <= SIZE; i++) {
-//            System.out.print(i + " ");
-//        }
-//        System.out.println();
-//        for (int i = 0; i < SIZE; i++) {
-//            System.out.print((i + 1) + " ");
-//            for (int j = 0; j < SIZE; j++) {
-//                System.out.print(map[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
-//        System.out.println();
-//    }
-
-    public static void printMap(){
-        for (int i=0; i<SIZE;i++){
-            System.out.print(i+1+" ");
-            System.out.println(map[i]);
+    public static void printMap() {
+        for (int i = 0; i <= SIZE; i++) {
+            System.out.print(i + " ");
         }
+        System.out.println();
+        for (int i = 0; i < SIZE; i++) {
+            System.out.print((i + 1) + " ");
+            for (int j = 0; j < SIZE; j++) {
+                System.out.print(map[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 
     public static void initMap() {
@@ -87,6 +147,5 @@ public class Main {
                 map[i][j] = DOT_EMPTY;
             }
         }
-
     }
 }
