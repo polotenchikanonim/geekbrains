@@ -16,8 +16,10 @@ public class Main {
                 55,5000);
 
         for (Employee employee : employeesArray) {
-            if (employee.age>40) employee.showInfo();
-            System.out.println();
+            if (employee.getAge() >40){
+                employee.showInfo();
+                System.out.println();
+            }
         }
     }
 }

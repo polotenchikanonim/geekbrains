@@ -6,9 +6,17 @@ package com.company.lesson5;
 //Создать массив из 5 сотрудников.
 
 public class Employee {
-    String full_name, position, email, number_phone;
-    int age;
-    float salary;
+    private final String full_name;
+    private final String position;
+    private final String email;
+    private final String number_phone;
+    private final int age;
+
+    public int getAge() {
+        return age;
+    }
+
+    private final float salary;
 
     Employee(String full_name,String position,
              String email, String number_phone, int age, float salary){
