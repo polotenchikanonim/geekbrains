@@ -3,23 +3,21 @@ package com.company.lesson6;
 import com.company.lesson6.animal.Animal;
 
 public class Dog extends Animal {
-    int limit_swim = 10;
-    int limit_run = 500;
+    private static final int limitRun = 500;
+    private static final int limitSwim = 10;
 
-    public Dog(String name, String color, int age) {
-        super(name, color, age);
+    public static int getLimitRun() {
+        return limitRun;
     }
 
-    @Override
-    public void run(int meters) {
-        if (meters > limit_run) meters = limit_run;
-        System.out.println(name + " пробежал " + meters + " м.");
+    public Dog(String name, String color, int age) {
+        super(name, color, age, getLimitRun());
     }
 
     @Override
     public void swim(int meters) {
-        if (meters > limit_swim){
-            meters = limit_swim;
+        if (meters > limitSwim){
+            meters = limitSwim;
         }
         System.out.println(name  + " проплыл "  + meters + " м.");
     }
