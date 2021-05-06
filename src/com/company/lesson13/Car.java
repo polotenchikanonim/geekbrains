@@ -1,10 +1,15 @@
 package com.company.lesson13;
 
+import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
+
 public class Car implements Runnable {
     private static int CARS_COUNT;
     private Race race;
     private int speed;
     private String name;
+
     public String getName() {
         return name;
     }
@@ -17,6 +22,7 @@ public class Car implements Runnable {
         CARS_COUNT++;
         this.name = "Участник #" + CARS_COUNT;
     }
+
     @Override
     public void run() {
         try {
