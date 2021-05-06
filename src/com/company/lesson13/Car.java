@@ -3,19 +3,30 @@ package com.company.lesson13;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+
 
 public class Car implements Runnable {
     private static int CARS_COUNT;
-    private Race race;
-    private int speed;
-    private String name;
+    private final Race race;
+    private final int speed;
+    private final String name;
+
+    private static final AtomicBoolean isWon = new AtomicBoolean(false);
+    private static final CyclicBarrier startBarrier = MainClass.startBarrier;
+    private static final CountDownLatch countDownLatchFinish = MainClass.countDownLatchFinish;
+    private static final CountDownLatch countDownLatchReady = MainClass.countDownLatchReady;
+
 
     public String getName() {
         return name;
     }
+
     public int getSpeed() {
         return speed;
     }
+
     public Car(Race race, int speed) {
         this.race = race;
         this.speed = speed;
@@ -25,15 +36,27 @@ public class Car implements Runnable {
 
     @Override
     public void run() {
+
         try {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int)(Math.random() * 800));
+            countDownLatchReady.countDown();
             System.out.println(this.name + " готов");
+            startBarrier.await();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < race.getStages().size(); i++) {
-            race.getStages().get(i).go(this);
+
+        ArrayList<Stage> stages = race.getStages();
+
+        for (Stage stage : stages) {
+            stage.go(this);
         }
+
+        if (!isWon.getAndSet(true))
+            System.out.println(this.name + " - WIN");
+
+        countDownLatchFinish.countDown();
     }
 }
