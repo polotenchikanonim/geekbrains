@@ -15,15 +15,15 @@ public class lesson14 {
         System.out.println(findPairInArr(arr3));
         System.out.println(findPairInArr(arr4));
 
-        System.out.println(Arrays.toString(arr1));
-        System.out.println(Arrays.toString(findFourInArr(arr2)));
-
-
+        System.out.println(Arrays.toString(lastFourArr(arr4)));
+        System.out.println(Arrays.toString(lastFourArr(arr2)));
     }
 
     public static boolean findPairInArr (int[] arr) {
+
         boolean one = false;
         boolean four = false;
+        
         for (int a : arr) {
             if (a != 1 && a !=4)
                 return false;
@@ -35,22 +35,21 @@ public class lesson14 {
         return (one && four);
     }
 
-    public static int[] findLastFourInArr(int[] arr) {
+    public static int[] lastFourArr(int[] arr) {
 
-        boolean four = false;
-        int 
-        int i;
+        int lastFour = 0;
 
-        for (i = 0; i < arr.length; i++) {
+        for (int i = 0; i < arr.length; i++) {
             if (arr[i] == 4) {
-                four = true;
-                break;
+                lastFour = i;
+
             }
         }
-        if (four){
-            return Arrays.copyOfRange(arr, i, arr.length);
-        } else {
+        if (lastFour==0){
             throw new RuntimeException();
+
+        } else {
+            return Arrays.copyOfRange(arr, lastFour, arr.length);
         }
 
     }
