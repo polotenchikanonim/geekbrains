@@ -6,7 +6,6 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-
 public class Car implements Runnable {
     private static int CARS_COUNT;
     private final Race race;
@@ -14,10 +13,9 @@ public class Car implements Runnable {
     private final String name;
 
     private static final AtomicBoolean isWon = new AtomicBoolean(false);
-    private static final CyclicBarrier startBarrier = MainClass.startBarrier;
     private static final CountDownLatch countDownLatchFinish = MainClass.countDownLatchFinish;
     private static final CountDownLatch countDownLatchReady = MainClass.countDownLatchReady;
-
+    private static final CyclicBarrier startBarrier = MainClass.startBarrier;
 
     public String getName() {
         return name;
@@ -43,7 +41,6 @@ public class Car implements Runnable {
             countDownLatchReady.countDown();
             System.out.println(this.name + " готов");
             startBarrier.await();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
